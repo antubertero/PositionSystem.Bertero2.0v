@@ -1,0 +1,33 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
+      POSTGRES_DB: control_personal
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
+  backend-node:
+    build:
+      context: ./backend-node
+      dockerfile: Dockerfile
+    environment:
+      PORT: 8080
+      DB_URL: postgresql://app:app@postgres:5432/control_personal
+      JWT_SECRET: devsecret
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+  frontend:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    environment:
+      - VITE_API_BASE_URL=http://backend-node:8080
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend-node
