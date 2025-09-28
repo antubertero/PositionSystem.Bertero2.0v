@@ -1,0 +1,13 @@
+node_modules
+.env
+.DS_Store
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+dist
+coverage
+*.log
+app/node_modules
+backend-node/node_modules
+control-personal-full.zip
+control-personal-full.b64
